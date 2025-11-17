@@ -1,4 +1,0 @@
-
-Assistant: Hello! 👋 I'm your AI Technical Hiring Assistant...
-
-You: [Paste Senior Python Developer JD]
