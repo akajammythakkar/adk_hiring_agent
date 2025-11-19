@@ -153,7 +153,7 @@ Run it:
 python tests/test_resume_reviewer.py
 ```
 
-### Test 3: GitHub Validator
+### Test 3: GitHub Validator Function
 
 Create `tests/test_github_validator.py`:
 
@@ -165,7 +165,7 @@ Unit test for GitHub validator function.
 from tools_agents import github_validator
 
 def test_github_validation():
-    """Test GitHub account validation."""
+    """Test GitHub account validation - direct function call."""
     
     # Test 1: Valid username
     print("Test 1: Valid GitHub username")
@@ -223,7 +223,7 @@ Integration test for agent chain.
 from tools_agents import (
     rubric_builder,
     resume_reviewer,
-    github_validator,
+    github_validator,  # This is a function, not an agent
     github_reviewer,
     verdict_synthesizer
 )

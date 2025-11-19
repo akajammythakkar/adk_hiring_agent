@@ -202,7 +202,7 @@ def github_validator(username: str) -> dict:
     import re
     import requests
     from datetime import datetime
-    
+    print(username)
     # Extract username from various formats
     username = username.strip()
     

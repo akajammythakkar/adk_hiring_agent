@@ -39,13 +39,13 @@ Conversational multi-agent orchestrator that uses specialized sub-agents as tool
 """
 
 from google.adk.agents import LlmAgent
-from google.adk.tools import AgentTool
+from google.adk.tools import AgentTool, FunctionTool
 
 # Import the simplified sub-agents (no template variables)
 from .tools_agents import (
     rubric_builder,
     resume_reviewer,
-    github_validator_agent,
+    github_validator,  # Import the function, not the agent
     github_reviewer,
     verdict_synthesizer,
 )
@@ -72,12 +72,14 @@ Add this to `agent.py`:
 # Create AgentTools that wrap the sub-agents
 rubric_tool = AgentTool(agent=rubric_builder)
 resume_eval_tool = AgentTool(agent=resume_reviewer)
-github_validate_tool = AgentTool(agent=github_validator_agent)
+github_validate_tool = FunctionTool(func=github_validator)  # Use FunctionTool for direct function call
 github_eval_tool = AgentTool(agent=github_reviewer)
 verdict_tool = AgentTool(agent=verdict_synthesizer)
 ```
 
-**What does AgentTool do?**
+**What do AgentTool and FunctionTool do?**
+
+**AgentTool** - Wraps an LLM agent as a tool:
 
 ```
 Sub-Agent (LlmAgent) → AgentTool → Tool for Root Agent
@@ -85,11 +87,27 @@ Sub-Agent (LlmAgent) → AgentTool → Tool for Root Agent
 Has instructions    Wraps agent    Root can "call" it
 ```
 
+**FunctionTool** - Wraps a Python function as a tool:
+
+```
+Python Function → FunctionTool → Tool for Root Agent
+   ↓                 ↓               ↓
+Direct logic    Wraps function   Root calls with params
+```
+
+**Why use FunctionTool for GitHub validation?**
+
+- ✅ **More efficient**: Direct function call (no LLM needed for API logic)
+- ✅ **Deterministic**: Consistent results every time
+- ✅ **Faster**: No extra LLM API call
+- ✅ **Cost-effective**: Saves on token usage
+
 The root agent treats these as **function calls**:
 
 ```python
 # Root agent thinks like this:
 "User provided resume → I should call resume_eval_tool"
+"GitHub URL found → I should call github_validate_tool(username='...')"
 ```
 
 ## Building the Root Orchestrator Agent
@@ -170,6 +188,21 @@ elif user_requests_verdict and evaluations_exist:
 ```
 
 The orchestrator's LLM handles this logic **automatically** based on conversation context.
+
+### Important: Function Tool Parameters
+
+When calling the `github_validate_tool`, the orchestrator must pass the `username` parameter:
+
+```python
+# Correct usage
+github_validate_tool(username="johndoe")
+github_validate_tool(username="github.com/johndoe")
+
+# The root agent's instructions tell it to pass parameters:
+# "call github_validator(username='EXTRACTED_USERNAME')"
+```
+
+This is different from AgentTools which don't require explicit parameters - they get context from conversation history.
 
 ### Conversation State Management
 

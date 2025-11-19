@@ -144,13 +144,35 @@ touch tools_agents.py
 ls -la
 ```
 
+Create the `__init__.py` file with package exports:
+
+```python
+"""
+Conversational Hiring Agent Package
+"""
+
+from .agent import root_agent
+
+__all__ = ["root_agent"]
+```
+
+This allows you to import the root agent easily:
+
+```python
+# Can now do:
+from conversational_hiring import root_agent
+
+# Instead of:
+from conversational_hiring.agent import root_agent
+```
+
 Your project directory should now look like this:
 
 ```
 conversational_hiring/
 ├── .env                  # API keys (not committed to git)
 ├── .gitignore           # Files to ignore in git
-├── __init__.py          # Python package marker
+├── __init__.py          # Python package exports
 ├── agent.py             # Root orchestrator agent
 ├── tools_agents.py      # Specialized sub-agents
 ├── requirements.txt     # Python dependencies

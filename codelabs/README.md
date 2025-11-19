@@ -194,6 +194,12 @@ Each tutorial step includes:
 - **Full system with testing**: 6-8 hours (All steps)
 - **Production deployment prep**: +2-3 hours (Step 9 considerations)
 
+## 📋 Changelog
+
+This tutorial is kept up-to-date with the codebase. See [CHANGELOG.md](CHANGELOG.md) for details on recent updates.
+
+**Latest Update:** GitHub validator now uses `FunctionTool` (direct function call) instead of `AgentTool` for better performance and cost efficiency.
+
 ## 🤝 Contributing
 
 Found an error? Have a suggestion? Want to share your implementation?

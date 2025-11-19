@@ -300,9 +300,20 @@ def github_validator(username: str) -> dict:
         }
 ```
 
-### Option B: Agent with Code Execution
+### Which Approach to Use?
 
-Alternatively, create an agent that executes Python code:
+**In the actual implementation**, we use **Option A: Python Function** wrapped with `FunctionTool` because:
+
+- ✅ **More efficient**: Direct function call vs. LLM agent
+- ✅ **Deterministic**: No LLM interpretation needed
+- ✅ **Faster**: No API call to Gemini for validation logic
+- ✅ **Cost-effective**: Saves on LLM tokens
+
+The root orchestrator will call this function directly by passing the username as a parameter.
+
+### Option B: Agent with Code Execution (Alternative)
+
+For reference, you could also create an agent that executes Python code:
 
 ```python
 github_validator_agent = LlmAgent(

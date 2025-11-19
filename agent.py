@@ -3,13 +3,13 @@ Conversational multi-agent orchestrator that uses specialized sub-agents as tool
 """
 
 from google.adk.agents import LlmAgent
-from google.adk.tools import AgentTool
+from google.adk.tools import AgentTool, FunctionTool
 
 # Import the simplified sub-agents (no template variables)
 from .tools_agents import (
     rubric_builder,
     resume_reviewer,
-    github_validator_agent,
+    github_validator,  # Use the function, not the agent
     github_reviewer,
     verdict_synthesizer,
 )
@@ -21,7 +21,7 @@ MODEL_NAME = os.getenv("MODEL_NAME")
 # Create AgentTools that wrap the sub-agents
 rubric_tool = AgentTool(agent=rubric_builder)
 resume_eval_tool = AgentTool(agent=resume_reviewer)
-github_validate_tool = AgentTool(agent=github_validator_agent)
+github_validate_tool = FunctionTool(func=github_validator)  # Use FunctionTool for the validator function
 github_eval_tool = AgentTool(agent=github_reviewer)
 verdict_tool = AgentTool(agent=verdict_synthesizer)
 
@@ -58,12 +58,12 @@ Think of yourself as a hiring coordinator who manages a team of specialists.
 
 1. **RubricBuilder** - Creates evaluation rubric from job description
 2. **ResumeReviewer** - Scores resume against rubric  
-3. **GitHubValidator** - Validates if GitHub account exists
+3. **github_validator** - Function that validates if GitHub account exists (requires username parameter)
 4. **GitHubReviewer** - Analyzes GitHub profile
 5. **VerdictSynthesizer** - Provides final HIRE/NO HIRE decision
 
-These are specialized agents you can call as tools. When you call them, explain what you're doing to the user first.
-The tools will have access to the conversation history and can reference previous messages.
+These are specialized tools you can call. When you call them, explain what you're doing to the user first.
+Most tools have access to the conversation history and can reference previous messages. The github_validator function requires you to pass the username as a parameter.
 
 ## CONVERSATIONAL WORKFLOW:
 
@@ -103,7 +103,7 @@ The tools will have access to the conversation history and can reference previou
 ### STEP 5: Handle GitHub Validation & Analysis - MOSTLY AUTOMATIC
 - **If GitHub found in resume - AUTOMATIC validation**:
   * Say: "I found a GitHub profile. Let me validate it..."
-  * **IMMEDIATELY call GitHubValidator tool** (no confirmation needed)
+  * **IMMEDIATELY call github_validator(username="EXTRACTED_USERNAME")** where username is the GitHub URL or username from resume (no confirmation needed)
   * **Show validation results**
   * **If validation PASSED**:
     - "✅ GitHub account validated! The account exists with [X] repositories."
@@ -115,7 +115,7 @@ The tools will have access to the conversation history and can reference previou
 
 - **If user manually provides GitHub URL or username**:
   * Say: "Perfect! Let me validate this GitHub account..."
-  * **IMMEDIATELY call GitHubValidator tool**
+  * **IMMEDIATELY call github_validator(username="USER_PROVIDED_USERNAME")**
   * **Show validation results**
   * **If validation PASSED**:
     - "✅ Validated! Now analyzing the profile..."
@@ -192,7 +192,7 @@ The tools will have access to the conversation history and can reference previou
 When calling tools:
 - For **RubricBuilder**: Ensure job description was provided in the conversation
 - For **ResumeReviewer**: Ensure both rubric and resume are in conversation history
-- For **GitHubValidator**: Provide the GitHub URL/username when calling
+- For **GitHubValidator**: MUST pass the GitHub URL/username as the `username` parameter when calling. Example: github_validator(username="github.com/johndoe") or github_validator(username="johndoe")
 - For **GitHubReviewer**: Only call after validation passes
 - For **VerdictSynthesizer**: Ensure at least resume evaluation is complete
 
@@ -241,7 +241,7 @@ Here's the Level 1 Resume Evaluation:
 
 I found a GitHub profile: github.com/johndoe. Let me validate it...
 
-[automatically calls GitHubValidator tool]
+[automatically calls github_validator(username="github.com/johndoe")]
 
 ✅ GitHub account validated! The account exists with 42 repositories.
 
@@ -277,7 +277,7 @@ I orchestrate a team of specialized AI agents to help you evaluate candidates th
 🔧 **My Specialists:**
 - **RubricBuilder** - Creates custom evaluation criteria
 - **ResumeReviewer** - Analyzes resumes with detailed scoring
-- **GitHubValidator** - Verifies GitHub accounts (using REST API)
+- **github_validator** - Verifies GitHub accounts (using REST API)
 - **GitHubReviewer** - Assesses code portfolios
 - **VerdictSynthesizer** - Provides final hiring recommendations
 
