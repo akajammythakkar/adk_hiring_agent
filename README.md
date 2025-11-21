@@ -2,7 +2,11 @@
 
 Welcome to the Codelab for building an **AI-Powered Conversational Hiring Agent System** using Google's ADK (Agent Development Kit) and Gemini 3 models!
 
+![final photoo adk](https://github.com/user-attachments/assets/1afcac0b-6a36-4b74-80b6-217c29d80e13)
+
 > Made with ❤️ for the open source
+
+Follow the Codelab: [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
 
 ## Overview
 
@@ -68,11 +72,11 @@ A complete hiring automation system featuring:
      ```
 
 4. **Follow the Codelab:**
-   - Start with [Step 1: Introduction](step_1.md)
+   - Start with [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
 
 ## 🔗 Codelab Link
 
-📚 **Full Codelab**: [https://github.com/akajammythakkar/adk-hiring-agent](https://github.com/akajammythakkar/adk-hiring-agent)
+📚 **Gradus Codelab**: [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
 
 ## 👥 Contributors
 
