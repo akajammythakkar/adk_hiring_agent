@@ -6,6 +6,8 @@ Welcome to the Codelab for building an **AI-Powered Conversational Hiring Agent 
 
 > Made with ❤️ for the open source
 
+Follow the Codelab: [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
+
 ## Overview
 
 This Codelab teaches you how to build a sophisticated multi-agent system that automates technical candidate evaluation through a conversational interface. The system uses specialized AI agents to evaluate resumes, validate GitHub profiles, and provide comprehensive hiring recommendations.
@@ -70,11 +72,11 @@ A complete hiring automation system featuring:
      ```
 
 4. **Follow the Codelab:**
-   - Start with [Step 1: Introduction](step_1.md)
+   - Start with [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
 
 ## 🔗 Codelab Link
 
-📚 **Full Codelab**: [https://github.com/akajammythakkar/adk-hiring-agent](https://github.com/akajammythakkar/adk-hiring-agent)
+📚 **Gradus Codelab**: [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
 
 ## 👥 Contributors
 
