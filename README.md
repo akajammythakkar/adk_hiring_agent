@@ -6,7 +6,7 @@ Welcome to the Codelab for building an **AI-Powered Conversational Hiring Agent 
 
 > Made with ❤️ for the open source
 
-Follow the Codelab: [https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3](https://gradus.dev/labs/building-a-hiring-agent-with-adk-gemini-3)
+Follow the Codelab: [codelab](https://imjt.dev/adk_hiring_agent)
 
 ## Overview
 
