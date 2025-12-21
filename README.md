@@ -94,3 +94,5 @@ Found an error? Have a suggestion? Want to share your implementation?
 - **Share your work**: Show us what you've built
 
 **Good luck, and happy building!** 🚀
+
+Google Cloud credits are provided for this project.
