@@ -5,9 +5,22 @@ Simplified sub-agents for conversational workflow (without template variables).
 from google.adk.agents import LlmAgent
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
-GEMINI_MODEL = os.getenv("MODEL_NAME")
+
+# Load the .env sitting next to this file, not the one in whatever directory
+# `adk web` happens to be launched from.
+load_dotenv(Path(__file__).with_name(".env"))
+GEMINI_MODEL = os.getenv("MODEL_NAME", "gemini-flash-latest")
+
+# Values the README/.env ship as fill-me-in placeholders. Sending one of these as a
+# live Authorization header makes every GitHub call fail with 401 instead of falling
+# back to anonymous access.
+PLACEHOLDER_TOKENS = {
+    "your_token_here",
+    "your_github_token",
+    "ghp_your_real_token_here",
+}
 
 # Rubric Builder - takes job description directly from conversation
 rubric_builder = LlmAgent(
@@ -240,9 +253,12 @@ def github_validator(username: str) -> dict:
             "User-Agent": "GitHub-Profile-Validator"
         }
         
-        # Add token if available (for higher rate limits)
-        github_token = os.getenv("GITHUB_TOKEN")
-        if github_token:
+        # Add token if available (for higher rate limits).
+        # An unfilled placeholder token makes GitHub reject every request with a
+        # 401, which is strictly worse than making anonymous (rate-limited) calls,
+        # so treat the shipped placeholder values as "no token".
+        github_token = os.getenv("GITHUB_TOKEN", "").strip()
+        if github_token and github_token not in PLACEHOLDER_TOKENS:
             headers["Authorization"] = f"token {github_token}"
         
         response = requests.get(api_url, headers=headers, timeout=10)
