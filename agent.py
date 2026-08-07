@@ -14,9 +14,14 @@ from .tools_agents import (
     verdict_synthesizer,
 )
 import os
+from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
-MODEL_NAME = os.getenv("MODEL_NAME")
+
+# Load the .env sitting next to this file, not the one in whatever directory
+# `adk web` happens to be launched from. This package is imported as a package,
+# so the process CWD is the parent directory and a bare load_dotenv() misses it.
+load_dotenv(Path(__file__).with_name(".env"))
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-flash-latest")
 
 # Create AgentTools that wrap the sub-agents
 rubric_tool = AgentTool(agent=rubric_builder)
